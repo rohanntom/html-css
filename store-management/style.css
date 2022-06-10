@@ -1,0 +1,247 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    /* display: flex; */
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    height:100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    }
+ h1{
+    font-size: 60px;
+    font-weight: 500;
+    margin: 0;
+  }
+  h2{
+    font-size: 35px;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .header{
+      background-color: rgb(128, 128, 128);
+      text-align: center;
+      padding: 8px;
+  }
+
+  .container{
+      display: flex;
+      flex-direction: row;  
+  }
+  .side-bar{
+    display:flex;
+    width: 22%;
+    min-height: 90vh;
+    background-color: rgb(205, 206, 206);
+    overflow:hidden;
+  }
+  .side-bar ul, h3{
+      width: 100%;
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+      align-items: center;
+      text-align: center;
+      border-bottom: 1px solid gray;
+  }
+  .side-bar h3{
+      padding: 1em;
+      padding-left: 0%;
+      font-size: 20px;
+  }
+  .side-bar ul li :hover{
+      background-color: rgb(232, 232, 232);
+  }
+
+  /* create invoice */
+
+  .invoice{
+      /* width: 78%; */
+      width: 78%;
+      display: flex;
+      flex-direction: column;
+  }
+  .invoice-header{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 20px 10px;
+      border-bottom: 1px solid black;
+  }
+     .button{
+      border: 1px solid black;
+      border-radius: 6px;
+      background-color: rgb(255, 177, 51);
+      padding: 8px 10px;
+      font-size: 18px;
+      font-weight: 400;
+  }
+  .button:hover{
+      background-color: rgb(252, 201, 120);;
+  }
+  span{
+      color: red;
+  }
+  .empty-lineItem{
+      text-align: center;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+  }
+  .lineItem-listing{
+      margin-top: 10px;
+   
+  }
+  .lineItems{
+    text-align: center;
+  }
+
+
+  .fa-pen{
+      color: orange;
+      border: 1px solid orange;
+      border-radius: 6px;
+      padding:7px 7px;  
+      font-size: 17px;
+      margin: 5px 0;
+  }
+  .fa-trash{
+    color: red;
+    border: 1px solid red;
+    border-radius: 6px;
+    padding:7px 7px;
+    font-size: 17px;
+    margin: 5px 0;
+  }
+  .fa-pen:hover{
+      color:rgb(239, 197, 120)
+  }
+  .fa-trash:hover{
+      color:rgb(246, 106, 106)
+  }
+ 
+
+  .view-total{
+      border: 1px solid black;
+      height: 50px;
+      padding: 20px 10px;
+      width: 98%;
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      
+  }
+  .view-total h3{
+      border: none;
+      text-align: start;
+  }
+  .alert{
+      height:40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 10%;
+  }
+  .alert-success{
+      background-color: rgb(31, 211, 15);
+      color: white;
+      font-size: 20px;
+      font-weight: 500;
+  }
+  .alert-danger{
+      background-color: red;
+      color: white;
+      font-size: 20px;
+      font-weight: 500;
+  }
+
+
+  /* input form */
+
+  .input-form{
+      display: none;
+      justify-content: center;
+      align-items: center;
+      width:78%;
+  }
+  .lineItem-form{
+      background-color:rgb(212, 229, 244);
+      width: 600px;
+      height: 450px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 15px;
+  }
+  .form{
+    display: flex;
+    flex-direction: column;
+    height: 70px;
+    width: 400px;
+  }
+  label{
+    font-weight: 400;
+  }
+  .form-control{
+    height: 27px;
+  }
+
+  /* invoice completed */
+  .popup{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width:78%;
+  }
+  .popup-container{
+    background-color:rgb(212, 229, 244);
+      width: 500px;
+      height: 350px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 15px;
+  }
+  .popup h2{
+      margin: 10px;
+  }
+  .popup input{
+      margin-top: 20px;
+  }
+
+  /* view total sales */
+
+  .view-total-sales{
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 78%;
+  }
+  .view-total-sales h2{
+    margin: 12px 0;
+  }
+
+  /* view all invoices */
+
+  .view-all-invoices{
+      display: none;
+      flex-direction: column;
+      width: 78%;
+  }
+
+  .invoices{
+      text-align: center;
+  }
+
+  /* .lineItem-listing, .view-total{
+      display: none;
+  } */

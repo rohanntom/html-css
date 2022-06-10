@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>store-management.com</title>
+    <link href="/home/rohann/html/store-management/font/fontawesome-free-6.1.1-web/css/all.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="header">
+        <h1>Store Management</h1>
+    </div>
+
+    <div class="container">
+        <div class="side-bar">
+            <ul>
+                <li><h3 id="newInvoice">Create new invoice</h3></li> 
+                <li><h3 id="viewSales">View total sales</h3></li>
+                <li><h3 id="viewInvoices">View all invoices</h3></li>
+            </ul>
+        </div>
+
+    <!-- create new invoice -->
+
+    <div class="invoice" id="invoiceDiv">
+       <div class="invoice-header"> <h2>Invoice</h2>
+         <input type="submit" value="Add item" class="button" id="addItem">
+        </div>
+
+        <div class="empty-lineItem" id="emptyLineItem">
+            <h2>Invoice is <span>Empty</span>!!! Add items...</h2>
+        </div>
+
+        <table class = "lineItem-listing">
+            <thead>
+                <tr>
+                    <!-- <th>SlNo.</th> -->
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>MRP</th>
+                    <th>Amount</th>
+                    <th>Tax</th>
+                    <th>Total</th>                    
+                </tr>
+            </thead>
+            <tbody class="lineItems" id="lineItems-list"></tbody>
+            </tbody>
+        </table>
+        
+        <div class="view-total">
+            <!-- <h3>Total Amount: 100</h3> -->
+             <h3 id="viewTotal"></h3>
+             <input type="submit" value="Checkout" class="button" id="invoiceCompleted">
+        </div>
+    </div>
+<!-- </div> -->
+
+
+    <!-- receive input form -->
+
+<div class="input-form" id="inputForm">
+  <form class="lineItem-form">
+     <div class="form">
+        <label for="productName">Product Name</label>
+        <input type="text" id="productName" class="form-control">
+    </div>
+    <div class="form">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" class="form-control">
+    </div>
+    <div class="form">
+        <label for="mrp">MRP</label>
+        <input type="number" id="mrp" class="form-control">
+    </div>
+    <input type="submit" value="Add item" class="button">
+  </form>
+</div>
+
+<!-- invoice completed -->
+
+<div class="popup" id="popupDiv">
+    <div class="popup-container">
+        
+     </div>
+</div>
+
+<!-- view total sales -->
+
+<div class="view-total-sales" id="totalSales">
+</div>
+
+<!-- view all invoices -->
+
+<div class="view-all-invoices" id="allInvoices">
+    <div class="invoice-header"> <h2>All Invoices</h2>
+       </div>
+    <table class="invoice-listing">
+        <thead>
+            <tr>
+                <!-- <th>SlNo.</th> -->
+                <th>Invoice ID</th>
+                <th>Total Amount</th>                  
+            </tr>
+        </thead>
+        <tbody class="invoices" id="invoice-list"></tbody>
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+
+
+
+<script src="./main.js"></script>
+</body>
+</html>
