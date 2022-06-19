@@ -58,10 +58,12 @@ class UI{
 
 
     static addItemToList(lineItem){
+        // adds item to lineItem[] 
         this.lineItems.push(lineItem);
         this.invoiceAmount += parseFloat(lineItem.amountWithTax);
-        console.log(this.invoiceAmount);
         console.log(this.lineItems);
+
+        // adds item to UI
         const list = document.querySelector('#lineItems-list');
         const row= document.createElement('tr');
 
@@ -79,27 +81,23 @@ class UI{
     }
 
     static deleteItem(el){
+        // deletes item from UI
         if(el.classList.contains('fa-trash')){
             el.parentElement.parentElement.remove();
         }
+        // deletes item from lineItems[]
         const productName = el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
-
-        // this.lineItems.forEach((lineItem) => {
-        //     if(lineItem.productName === productName){
-        //         // this.lineItems.splice(lineItem, 1);
-        //         // this.lineItems.pop(lineItem);
-        //         this.invoiceAmount -= parseFloat(lineItem.amountWithTax);
-        //         this.amount -= parseFloat(lineItem.amount);
-        //         this.amountWithTax -= parseFloat(lineItem.amountWithTax); 
-        //         this.tax -= parseFloat(lineItem.tax);
-        //     }     
-        // });
-
-        const indexOfItem = this.lineItems.indexOf(productName);
-        console.log("index", indexOfItem);
-        if(indexOfItem > -1)
-            this.lineItems.splice(indexOfItem, 1);
-        console.log(this.lineItems);
+        this.lineItems.forEach((lineItem)=>{
+            if(lineItem.productName === productName){
+                const index = this.lineItems.indexOf(lineItem);
+                this.lineItems.splice(index,1);
+                console.log("delete", this.lineItems);
+                this.invoiceAmount -= parseFloat(lineItem.amountWithTax);
+                this.amount -= parseFloat(lineItem.amount);
+                this.amountWithTax -= parseFloat(lineItem.amountWithTax); 
+                this.tax -= parseFloat(lineItem.tax);
+            }
+        });
         
     }
 
@@ -189,16 +187,6 @@ document.querySelector('#lineItems-list').addEventListener('click',
     (e)=>{
         UI.deleteItem(e.target);
         if(e.target.classList.contains('fa-trash')){
-
-            // const productName = e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
-            // const indexOfItem = UI.lineItems.indexOf(productName);
-            // console.log(UI.lineItems);
-            // console.log("index", indexOfItem);
-            // if (indexOfItem > -1)
-            //     UI.lineItems.splice(indexOfItem, 1);
-            // console.log(UI.lineItems);
-
-
         // Shows total amount inside the container
         document.querySelector('#viewTotal').innerHTML=`Total Amount: ${UI.invoiceAmount.toFixed(2)}`;
         
@@ -229,7 +217,7 @@ function submitInvoice(){
         displayPopup.innerHTML = `<h2>Your total is $${UI.invoiceAmount.toFixed(2)}.</h2>
         <h2>Thanks for shopping.</h2>`;
         // <input type="submit" value="Done" class="button">`; 
-        
+
         UI.clearInvoice();
         UI.lineItems = [];
         
