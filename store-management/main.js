@@ -2,6 +2,7 @@
 
 class LineItem{
      constructor(productName, quantity, mrp){
+        this.itemId = Date.now();
         this.productName = productName;
         this.quantity = quantity;
         this.mrp = mrp;
@@ -68,6 +69,7 @@ class UI{
         const row= document.createElement('tr');
 
         row.innerHTML =`
+        <td>${lineItem.itemId}</td>
         <td>${lineItem.productName}</td>
         <td>${lineItem.quantity}</td>
         <td>${lineItem.mrp}</td>
@@ -86,11 +88,10 @@ class UI{
             el.parentElement.parentElement.remove();
         }
         // deletes item from lineItems[]
-        const productName = el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+        const itemId = parseInt(el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
         this.lineItems.forEach((lineItem)=>{
-            if(lineItem.productName === productName){
-                const index = this.lineItems.indexOf(lineItem);
-                this.lineItems.splice(index,1);
+             if(lineItem.itemId === itemId){
+                this.lineItems.splice(this.lineItems.indexOf(lineItem),1);
                 console.log("delete", this.lineItems);
                 this.invoiceAmount -= parseFloat(lineItem.amountWithTax);
                 this.amount -= parseFloat(lineItem.amount);
@@ -167,7 +168,7 @@ document.querySelector("#inputForm").addEventListener("submit",
         const mrp = document.querySelector('#mrp').value;
 
         if(productName === '' || quantity === '' || mrp === ''){
-            alert("Please fill all fields");
+            alert("Please fill all fields...");
         }
         else{
             const lineItem = new LineItem(productName,quantity,mrp);
