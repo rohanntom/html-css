@@ -44,7 +44,6 @@ class StoreManagement{
         this.totalAmount += parseFloat(invoice.amount);
         this.totalTax += parseFloat(invoice.tax);
         this.count++;
-        console.log(this.invoices);
     }
 }
 
@@ -64,7 +63,6 @@ class UI{
         // adds item to lineItem[] 
         this.lineItems.push(lineItem);
         this.invoiceAmount += parseFloat(lineItem.amountWithTax);
-        console.log(this.lineItems);
 
         // adds item to UI
         const list = document.querySelector('#lineItems-list');
@@ -90,11 +88,11 @@ class UI{
             el.parentElement.parentElement.remove();
         }
         // deletes item from lineItems[]
-        const itemId = el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+        const itemId = el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling
+        .previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
         this.lineItems.forEach((lineItem)=>{
              if(lineItem.itemId === itemId){
                 this.lineItems.splice(this.lineItems.indexOf(lineItem),1);
-                console.log("delete", this.lineItems);
                 this.invoiceAmount -= parseFloat(lineItem.amountWithTax);
                 this.amount -= parseFloat(lineItem.amount);
                 this.amountWithTax -= parseFloat(lineItem.amountWithTax); 
