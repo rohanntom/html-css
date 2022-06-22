@@ -2,7 +2,7 @@
 
 class LineItem{
      constructor(productName, quantity, mrp){
-        this.itemId = Date.now();
+        this.itemId = "LI22N" + ++LineItem.count;
         this.productName = productName;
         this.quantity = quantity;
         this.mrp = mrp;
@@ -10,11 +10,12 @@ class LineItem{
         this.tax = (this.amount * 0.18).toFixed(2);
         this.amountWithTax = (this.amount * 1.18).toFixed(2);
      }  
+     static count = 200;
 }
 
 class Invoice{
    constructor(lineItems){
-       this.invoiceId = Date.now();
+       this.invoiceId = "INV22X"+ ++Invoice.count;
        this.lineItems = lineItems;
        this.amount = 0.00;
        this.amountWithTax = 0.00;
@@ -25,6 +26,7 @@ class Invoice{
            this.tax += parseFloat(lineItem.tax);
        }
     }
+    static count =2200;
 }
 
 class StoreManagement{ 
@@ -88,7 +90,7 @@ class UI{
             el.parentElement.parentElement.remove();
         }
         // deletes item from lineItems[]
-        const itemId = parseInt(el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
+        const itemId = el.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
         this.lineItems.forEach((lineItem)=>{
              if(lineItem.itemId === itemId){
                 this.lineItems.splice(this.lineItems.indexOf(lineItem),1);
