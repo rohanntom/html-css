@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>store-management.com</title>
+    <link href="/home/rohann/html/store-management/font/fontawesome-free-6.1.1-web/css/all.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  </head>
+  <body>
+    <div class="header">
+        <h1>Store Management</h1>
+    </div>
+    
+    <div class="container" id="container">
+        <div class="side-bar">
+            <ul>
+                <li><h3 id="newInvoice" @click="home = true, viewTotalSales = false, viewAllInvoices = false, input = false, submit = false, isInvoiceCompleted = false">Create new invoice</h3></li> 
+                <li><h3 id="viewSales" @click="viewTotalSales = true, home = false, viewAllInvoices =false, input = false, submit = false, isInvoiceCompleted = false">View total sales</h3></li>
+                <li><h3 id="viewInvoices" @click="viewAllInvoices = true, viewTotalSales = false, home =false, input = false, submit = false, isInvoiceCompleted = false">View all invoices</h3></li>
+            </ul>
+        </div>
+
+<!-- create new invoice -->
+
+<div class="invoice" id="invoiceDiv" v-show="home">
+        
+    <div class="invoice-header"> <h2>Invoice</h2>
+        <input type="submit" value="Add item" class="button" id="addItem" @click="input = true, viewAllInvoices = false, viewTotalSales = false, home = false ,submit = false, isInvoiceCompleted = false">
+    </div>
+    
+    <div class="empty-lineItem" v-show="items.length === 0">
+        <h2>Invoice is <span>Empty</span>!!! Add items...</h2>
+    </div>
+
+    <line-items-table v-show="items.length > 0" v-bind:items="items"></line-items-table>
+
+    <div class="view-total" v-show="items.length > 0">
+        <h3 id="viewTotal">Total Amount: {{ amount }}</h3>
+        <input type="submit" value="Checkout" class="button" id="checkout" @click="submitInvoice(), isInvoiceCompleted = true, home = false, viewTotalSales = false, viewAllInvoices = false, input = false">
+    </div>
+ 
+</div> 
+
+
+
+<!-- receive input form -->
+
+<div class="input-form" id="inputForm" v-show="input">
+    
+        <input-form v-bind:items="items" :amount="amount"></input-form>
+     
+</div>
+
+<!-- invoice completed -->
+
+<div class="popup" id="popupDiv" v-show="isInvoiceCompleted">
+    <div class="popup-container">
+        <h2>Your total is ${{ StoreManagement.totalAmountWithTax }}.</h2>
+        <h2>Thanks for shopping.</h2>
+     </div>
+</div>
+
+<!-- view total sales -->
+<div class="view-total-sales" id="totalSales" v-show="viewTotalSales">
+    <sales-page></sales-page>
+</div>
+
+<!-- view all invoices -->
+
+<div class="view-all-invoices" id="allInvoices" v-show="viewAllInvoices">
+    <div class="invoice-header"> <h2>All Invoices</h2>
+       </div>
+
+    <div class="empty-lineItem" v-show="invoices.length === 0">
+        <h2>No invoices added yet!!!</h2>
+    </div>
+
+    <invoices-page v-show="invoices.length > 0" v-bind:amount="amount"></invoices-page>
+</div>
+</div> 
+ 
+<script src="./vue.js"></script>
+</body>
+</html>
