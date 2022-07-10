@@ -48,7 +48,7 @@
 
 <div class="input-form" id="inputForm" v-show="input">
     
-        <input-form v-bind:items="items" :amount="amount"></input-form>
+    <input-form v-bind:items="items" :amount="amount" :home="home" :input="input"></input-form>
      
 </div>
 
@@ -56,7 +56,7 @@
 
 <div class="popup" id="popupDiv" v-show="isInvoiceCompleted">
     <div class="popup-container">
-        <h2>Your total is ${{ StoreManagement.totalAmountWithTax }}.</h2>
+        <h2>Your total is ${{ amount }}.</h2>
         <h2>Thanks for shopping.</h2>
      </div>
 </div>
