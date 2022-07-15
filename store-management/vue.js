@@ -1,98 +1,68 @@
-class LineItem{
-    constructor(productName, quantity, mrp){
-       this.itemId = "LI22N" + ++LineItem.count;
-       this.productName = productName;
-       this.quantity = quantity;
-       this.mrp = mrp;
-       this.amount = (quantity * mrp).toFixed(2);
-       this.tax = (this.amount * 0.18).toFixed(2);
-       this.amountWithTax = (parseFloat(this.amount) + parseFloat(this.tax)).toFixed(2);
-    }  
-    static count = 200;
+"use strict";
+class LineItem {
+    static _count = 200;
+
+    get amount() {
+        return parseFloat((this.quantity * this.mrp).toFixed(2));
+    }
+    get tax() {
+        return parseFloat((this.amount * 0.18).toFixed(2));
+    }
+    get amountWithTax() {
+        return parseFloat((this.amount + this.tax).toFixed(2));
+    }
+
+    constructor(productName, quantity, mrp) {
+        this.itemId = "LIN22X" + ++LineItem._count;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.mrp = mrp;
+    }
 }
 
-class Invoice{
-  constructor(lineItems){
-      this.invoiceId = "INV22X" + ++Invoice.count;
-      this.lineItems = lineItems;
-      this.amount = 0.00;
-      this.amountWithTax = 0.00;
-      this.tax = 0.00;
-      for(const lineItem of this.lineItems){
-          this.amount = this.amount + parseFloat(lineItem.amount);
-          this.amountWithTax = this.amountWithTax + parseFloat(lineItem.amountWithTax);
-          this.tax = this.tax + parseFloat(lineItem.tax);
-      }
-   }
-   static count = 2200;
+class Invoice {
+    static _count = 2200;
+
+    lineItems = [];
+
+    get amount() {
+        return this.lineItems.reduce((acc, lineItem) => acc + lineItem.amount, 0);
+    }
+    get tax() {
+        return this.lineItems.reduce((acc, lineItem) => acc + lineItem.tax, 0);
+    }
+    get amountWithTax() {
+        return parseFloat((this.amount + this.tax).toFixed(2));
+    }
+
+    constructor() {
+        this.invoiceId = "INV22X" + ++Invoice._count;
+        this.date = Date.now();
+    }
+
+    addItem(productName, quantity, mrp) {
+        const lineItem = new LineItem(productName, quantity, mrp);
+        this.lineItems.push(lineItem);
+    }
+
+    removeItem(lineItem) {
+        const indexOfItem = this.lineItems.findIndex((e) => e.itemId === lineItem.itemId);
+        if (indexOfItem === -1)
+            return;
+        this.lineItems.splice(indexOfItem, 1);
+    }
 }
 
-class StoreManagement{ 
-   static invoices = [];
-   static invoiceId = '';
-   static totalAmount = 0.00;
-   static totalAmountWithTax = 0.00;
-   static totalTax = 0.00;
-   static count = 0;
+Vue.component('input-form', {
+    model: {
+        prop: 'invoice',
+        event: 'add-item'
+    },
 
-   static createInvoice(invoice){
-       this.invoices.push(invoice);
-       this.invoiceId = invoice.invoiceId;
-       this.totalAmountWithTax += parseFloat(invoice.amountWithTax);
-       this.totalAmount += parseFloat(invoice.amount);
-       this.totalTax += parseFloat(invoice.tax);
-       this.count++;
-   }
-}
+    props: ['invoice'],
 
-Vue.component('line-items-table',{
- props: ['items'],  
- template:`
-   <table class = "lineItems-listing">
-   <thead>
-       <tr>
-           <th>Item Id</th>
-           <th>Product Name</th>
-           <th>Quantity</th>
-           <th>MRP</th>
-           <th>Amount</th>
-           <th>Tax</th>
-           <th>Total</th>                    
-       </tr>
-   </thead>
-
-   <tbody class="lineItems">
-       <tr v-for="lineItem of items">
-           <td>{{ lineItem.itemId }}</td>
-           <td>{{ lineItem.productName }}</td>
-           <td>{{ lineItem.quantity }}</td>
-           <td>{{ lineItem.mrp }}</td>
-           <td>{{ lineItem.amount }}</td>
-           <td>{{ lineItem.tax }}</td>
-           <td>{{ lineItem.amountWithTax }}</td>
-           <td><i class="fas fa-trash" @click="removeItem(lineItem)"></i></td>
-       </tr>
-   </tbody>
-</table>`,
-   methods:{
-       removeItem(lineItem){
-           this.items = this.items.filter(function(el){
-            // return el !=lineItem;
-            this.items.splice(this.items.indexOf(lineItem),1);
-            this.amount = this.amount - (lineItem.amountWithTax);
-        });
-       }
-   }    
-});
-  
-
-
-
-Vue.component('input-form',{
-   props: ['items','amount','home','input'],
-   
-   template: `
-   <form class="lineItem-form" @submit.prevent="onSubmit">
+    template: `
+     <form class="lineItem-form" @submit.prevent="onSubmit">
            <p v-if="errors.length">
            <b>Please correct the following error(s):</b>
            <ul>
@@ -112,136 +82,146 @@ Vue.component('input-form',{
                <input type="number" id="mrp" class="form-control" v-model="mrp">
            </div>
        <button class="button">Add Item</button>
-   </form>`,
+     </form>`,
 
-   data(){
-       return {
-           productName: null,
-           quantity: null,
-           mrp: null,
-           errors: [],
-           invoiceAmount: this.amount,
-           invoicePage: this.home,
-           inputPage: this.input,
-       };
-   },
+    data() {
+        return {
+            productName: null,
+            quantity: null,
+            mrp: null,
+            errors: []
+        };
+    },
 
-   methods:{
-       onSubmit(){
-           if(this.productName && this.quantity && this.mrp){
-               const lineItem = new LineItem(this.productName,this.quantity, this.mrp);
-               this.items.push(lineItem);
-               this.invoiceAmount = this.invoiceAmount + parseFloat(lineItem.amountWithTax);
-               this.inputPage = false;
-               this.invoicePage = true;
-               this.productName = this.mrp = this.quantity = null;
-           }
-   
-           else {
-               if(!this.productName) this.errors.push("Product Name required.");
-               if(!this.quantity) this.errors.push("Quantity required.");
-               if(!this.mrp) this.errors.push("MRP required.");
-           }
-       },
-   },
+    methods: {
+        onSubmit() {
+            if (this.productName && this.quantity && this.mrp) {
+                this.invoice.addItem(this.productName, this.quantity, this.mrp);
+                this.$emit('add-item', this.invoice);
+                this.productName = null;
+                this.mrp = null;
+                this.quantity = null;
+                this.$emit('on-item-added');
+            }
+
+            else {
+                if (!this.productName) this.errors.push("Product Name required.");
+                if (!this.quantity) this.errors.push("Quantity required.");
+                if (!this.mrp) this.errors.push("MRP required.");
+            }
+        },
+    },
 });
 
-Vue.component('sales-page',{
-   template:`
-   <div>
-       <h1>Total Sales</h1>
-       <h2>Total number of invoices:{{ invoicesCount }}</h2> 
-       <h2>Total Sales:{{ sales }}</h2>
-       <h2>Total Tax: {{ tax }}</h2>
-       <h2>Total Revenue:{{ revenue }}</h2>
-   </div>`,
-   data(){
-       return{
-           invoicesCount: StoreManagement.count,
-           sales: StoreManagement.totalAmountWithTax,
-           tax: StoreManagement.totalTax,
-           revenue: StoreManagement.totalAmount,
-       };
-   }
- });
+Vue.component('line-items-table', {
+    props: ['items'],
+    template: `
+   <table class = "lineItems-listing">
+   <thead>
+       <tr>
+           <th>Item Id</th>
+           <th>Product Name</th>
+           <th>Quantity</th>
+           <th>MRP</th>
+           <th>Amount</th>
+           <th>Tax</th>
+           <th>Total</th>                    
+       </tr>
+   </thead>
 
- Vue.component('invoices-page',{
-   props: ['amount'],
-   template:`
-   <table class="invoice-listing">
+    <tbody class="lineItems">
+       <tr v-for="lineItem of items">
+           <td>{{ lineItem.itemId }}</td>
+           <td>{{ lineItem.productName }}</td>
+           <td>{{ lineItem.quantity }}</td>
+           <td>{{ lineItem.mrp }}</td>
+           <td>{{ lineItem.amount }}</td>
+           <td>{{ lineItem.tax }}</td>
+           <td>{{ lineItem.amountWithTax }}</td>
+           <td><i class="fas fa-trash" @click="onDelete(lineItem)"></i></td>
+       </tr>
+    </tbody>
+   </table>`,
+
+    methods: {
+        onDelete(lineItem) {
+            this.$emit('on-delete-pressed', lineItem);
+        }
+    }
+});
+
+Vue.component('invoices-page', {
+    props: ['invoices'],
+
+    template: `
+    <table class="invoice-listing">
        <thead>
            <tr>
-               <th>SlNo.</th>
+               <th>Date</th>
                <th>Invoice ID</th>
                <th>Total Amount</th>                  
            </tr>
        </thead>
 
-       <tbody class="invoices" id="invoice-list">
-           <td>{{ this.invoicesCount }}</td>
-           <td>{{ this.invoiceId }}</td>
-           <td>{{ amount }}</td>
+       <tbody class="invoices">
+        <tr v-for="invoice of invoices">
+           <td>{{ invoice.date }}</td>
+           <td>{{ invoice.invoiceId }}</td>
+           <td>{{ invoice.amountWithTax }}</td>
+        </tr>
        </tbody>
-       </tbody>
-   </table>`,
-
-   data(){
-       return{
-           invoicesCount: StoreManagement.count,
-           invoiceId: StoreManagement.invoiceId,
-           // invoiceAmount: this.invoiceAmount.toFixed(2),
-       };
-   }
- });
+      </tbody>
+    </table>`,
+});
 
 var store = new Vue({
-   el:'#container',
-   data:{
-       items: [],
-       invoices: StoreManagement.invoices,
-       amount: 0,
-       home: true,
-       viewTotalSales: false,
-       viewAllInvoices: false,
-       input: false,
-       isInvoiceCompleted: false,
-   },
-       
-   methods:{
-       // submit(){
-       //     if(this.productName && this.quantity && this.mrp){
-       //         const lineItem = new LineItem(this.productName,this.quantity, this.mrp);
-       //         this.items.push(lineItem);
-       //         this.invoiceAmount = this.invoiceAmount + parseFloat(lineItem.amountWithTax);
-       //         this.inputPage = false;
-       //         this.invoicePage = true;
-       //     }
-   
-       //     else {
-       //         if(!this.productName) this.errors.push("Product Name required.");
-       //         if(!this.quantity) this.errors.push("Quantity required.");
-       //         if(!this.mrp) this.errors.push("MRP required.");
-       //     }
-       // },
+    el: '#container',
+    data: {
+        invoices: [],
+        currentInvoice: null,
+        selectedTab: 'homePage'
+    },
 
-       // submit(){
-       //     home=true;
-       //     input=false;
-       // },
-       submitInvoice(){
-           if(this.items.length === 0){
-               alert('Invoice is empty!!! Add an item.');
-           }
-           else{
-               const invoice = new Invoice(this.items);
-               StoreManagement.createInvoice(invoice);
-               this.items = [];
-               this.amount = 0;
-           }
-       },
-   
-       // displayInvoices(){
-           
-       // },
-   }, 
-})
+    methods: {
+        createInvoice() {
+            this.currentInvoice = new Invoice();
+            this.selectedTab = 'invoicePage';
+        },
+
+        removeItem(lineItem) {
+            const shouldDelete = confirm('Are you sure you want to delete [' + lineItem.productName + '] ?');
+            if (!shouldDelete)
+                return;
+            this.currentInvoice.removeItem(lineItem);
+        },
+
+        submitInvoice() {
+            if (this.currentInvoice.lineItems.length === 0) {
+                alert('Invoice is empty!!! Add an item.');
+            }
+            else {
+                this.invoices.push(this.currentInvoice);
+                this.selectedTab = 'isInvoiceCompleted';
+            }
+        },
+
+        clearInvoice() {
+            this.currentInvoice = null;
+            this.selectedTab = 'homePage';
+        }
+    },
+
+    computed: {
+        totalAmount() {
+            return (this.invoices.reduce((acc, invoice) => acc + invoice.amount, 0)).toFixed(2);
+        },
+
+        totalTax() {
+            return (this.invoices.reduce((acc, invoice) => acc + invoice.tax, 0)).toFixed(2);
+        },
+
+        totalAmountWithTax() {
+            return (parseFloat(this.totalAmount) + parseFloat(this.totalTax)).toFixed(2);
+        }
+    }
+});
