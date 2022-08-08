@@ -1,0 +1,53 @@
+<div class="input-form">
+  <h2 class="title">Input Form</h2>
+
+  <!-- <form class="lineItem-form" @submit.prevent="onSubmit"> -->
+  <form>
+
+    <div class="field">
+      <label class="label">Product Name</label>
+      <div class="control">
+        <input
+          type="text"
+          placeholder="ProductName"
+          class="input"
+          v-model="productName"
+        />
+      </div>
+      <p class="help is-danger">{{errors.title}}</p>
+    </div>
+
+    <div class="field">
+      <label class="label">Quantity</label>
+      <div class="control">
+        <input
+          type="number"
+          placeholder="Quantity"
+          class="form-control"
+          v-model="quantity"
+        />
+      </div>
+      <p class="help is-danger">{{errors.title}}</p>
+    </div>
+
+    <div class="filed">
+      <label class="label">MRP</label>
+      <div class="control">
+        <input type="number" placeholder="MRP" class="form-control" v-model="mrp"/>
+      </div>
+      <p class="help is-danger">{{errors.title}}</p>
+    </div>
+    <!-- <button class="button">Add Item</button> -->
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-link" v-on:click.prevent="save" v-bind:disabled="hasErrors">Save</button>
+        </div>
+        <div class="control">
+            <router-link class="button is-text" to="/invoice">Cancel</router-link>
+        </div>
+    </div>
+
+    <p class="help is-danger" v-show="hasErrors">Please fix all errors</p>
+  </form>
+</div>

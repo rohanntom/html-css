@@ -1,0 +1,23 @@
+<div class="view-total-sales">
+  <div class="card">
+    <header class="card-header">
+      <h2 class="card-header-title">Total Sales</h2>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        <p>Total number of invoices: {{ invoiceLength }}</p>
+        <p>Total Sales: ${{ totalAmountWithTax }}</p>
+        <p>Total Tax: ${{ totalTax }}</p>
+        <p>Total Revenue: ${{ totalAmount }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="view-total-sales" v-if="selectedTab==='totalSalesPage'">
+    <h1>Total Sales</h1>
+    <h2>Total number of invoices: {{ invoices.length }}</h2>
+    <h2>Total Sales: ${{ totalAmountWithTax }}</h2>
+    <h2>Total Tax: ${{ totalTax }}</h2>
+    <h2>Total Revenue: ${{ totalAmount }}</h2>
+</div> -->

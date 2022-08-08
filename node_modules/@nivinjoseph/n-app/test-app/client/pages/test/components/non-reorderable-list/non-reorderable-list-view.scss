@@ -1,0 +1,12 @@
+.non-reorderable-list
+{
+    .horizontal
+    {
+        white-space: nowrap;
+    }
+
+    .dx-scrollable-native.dx-scrollable-native-generic .dx-scrollable-content
+    {
+        height: 100%;
+    }
+}

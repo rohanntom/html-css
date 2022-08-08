@@ -1,0 +1,46 @@
+<div class="invoice" v-if="selectedTab === 'invoicePage'">
+
+    <div class="invoice-header">
+       <h2>Invoice</h2>
+         <input type="submit" value="Add item" class="button" @click="selectedTab = 'inputPage'">
+    </div>
+
+    <div class="empty-lineItem" v-if="currentInvoice.lineItems.length === 0">
+        <h2>Invoice is <span>Empty</span>!!! Add items...</h2>
+            </div>
+
+            <div class="item-div" v-else>
+                <table class = "table">
+                    <thead>
+                        <tr>
+                            <th>Item Id</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>MRP</th>
+                            <th>Amount</th>
+                            <th>Tax</th>
+                            <th>Total</th>                    
+                        </tr>
+                    </thead>
+                 
+                     <tbody class="lineItems">
+                        <tr v-for="lineItem of items">
+                            <td>{{ lineItem.itemId }}</td>
+                            <td>{{ lineItem.productName }}</td>
+                            <td>{{ lineItem.quantity }}</td>
+                            <td>{{ lineItem.mrp }}</td>
+                            <td>{{ lineItem.amount }}</td>
+                            <td>{{ lineItem.tax }}</td>
+                            <td>{{ lineItem.amountWithTax }}</td>
+                            <td><i class="fas fa-trash" @click="onDelete(lineItem)"></i></td>
+                        </tr>
+                     </tbody>
+                    </table>
+
+                <div class="view-total">
+                    <h3>Total Amount: ${{ currentInvoice.amountWithTax }}</h3>
+                    <input type="submit" value="Checkout" class="button"
+                        @click="submitInvoice">
+                </div>
+            </div>
+        </div>  
